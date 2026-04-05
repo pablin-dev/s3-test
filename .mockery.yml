@@ -1,0 +1,6 @@
+with-expecter: true
+case: underscore
+dir: internal
+outpkg: mocks
+recursive: true
+keeptree: true

@@ -1,0 +1,4 @@
+aws:
+  region: us-east-1
+  s3_bucket: my-test-bucket
+  dynamodb_table: my-test-table

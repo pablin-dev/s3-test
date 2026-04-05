@@ -1,0 +1,23 @@
+version: 3
+components:
+  entity:
+    in: internal/entity
+  usecase:
+    in: internal/usecase
+  adapter:
+    in: internal/adapter
+  cmd:
+    in: cmd/app
+deps:
+  entity:
+    anyProjectDeps: false
+    mayDependOn: []
+  usecase:
+    anyProjectDeps: false
+    mayDependOn: [entity]
+  adapter:
+    anyProjectDeps: false
+    mayDependOn: [entity, usecase]
+  cmd:
+    anyProjectDeps: false
+    mayDependOn: [adapter, usecase]

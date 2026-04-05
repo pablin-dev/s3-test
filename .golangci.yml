@@ -1,0 +1,8 @@
+linters:
+  enable:
+    - godot
+
+linters-settings:
+  godot:
+    period: true
+    capital: true
