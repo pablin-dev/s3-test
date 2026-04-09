@@ -26,8 +26,12 @@ func InitializeApp(ctx context.Context) (*usecase.StorageUseCase, error) {
 	if err != nil {
 		return nil, err
 	}
-	s3Driver := driver.NewS3Driver(awsConfig, string2)
-	dynamoDBDriver := driver.NewDynamoDBDriver(awsConfig, string2)
+	client := ProvideS3Client(awsConfig)
+	s3ClientAPI := ProvideS3ClientAPI(client)
+	s3Driver := driver.NewS3Driver(s3ClientAPI, string2)
+	dynamodbClient := ProvideDynamoDBClient(awsConfig)
+	dynamoDBClientAPI := ProvideDynamoDBClientAPI(dynamodbClient)
+	dynamoDBDriver := driver.NewDynamoDBDriver(dynamoDBClientAPI, string2)
 	storageUseCase := usecase.NewStorageUseCase(s3Driver, dynamoDBDriver)
 	return storageUseCase, nil
 }
@@ -42,5 +46,9 @@ var superSet = wire.NewSet(
 	LoadConfig,
 	ProvideAWSConfig,
 	ProvideS3Bucket,
-	ProvideDynamoDBTable, driver.NewS3Driver, driver.NewDynamoDBDriver, wire.Bind(new(repository.S3Repository), new(*driver.S3Driver)), wire.Bind(new(repository.DynamoDBRepository), new(*driver.DynamoDBDriver)), usecase.NewStorageUseCase,
+	ProvideDynamoDBTable,
+	ProvideS3Client,
+	ProvideDynamoDBClient,
+	ProvideS3ClientAPI,
+	ProvideDynamoDBClientAPI, driver.NewS3Driver, driver.NewDynamoDBDriver, wire.Bind(new(repository.S3Repository), new(*driver.S3Driver)), wire.Bind(new(repository.DynamoDBRepository), new(*driver.DynamoDBDriver)), usecase.NewStorageUseCase,
 )
